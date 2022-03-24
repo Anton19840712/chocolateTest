@@ -1,0 +1,31 @@
+﻿1) 
+query {
+  age
+}
+
+2) 
+mutation addAuthor {
+  addAuthor(input:{name:"Antonio"}) {
+    record {
+      id
+      name
+    }
+    error
+  }
+}
+
+3)
+mutation addBook {
+  addBook(input:{
+    author:"e34750fb-8f11-46ad-ae5a-6066161297c3"
+    title: "Yes I am"
+    }) {
+    record {
+      id
+      title
+      author{
+        name
+      }
+    }
+  }
+}
