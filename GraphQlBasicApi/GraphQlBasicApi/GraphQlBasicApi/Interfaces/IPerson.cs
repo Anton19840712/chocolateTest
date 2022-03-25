@@ -6,7 +6,7 @@ using GraphQlBasicApi.Models;
 
 namespace GraphQlBasicApi.Interfaces
 {
-    interface IPerson
+    public interface IPerson
     {
         List<Person> GetAllPersons();
         Person AddPerson(Person person);
