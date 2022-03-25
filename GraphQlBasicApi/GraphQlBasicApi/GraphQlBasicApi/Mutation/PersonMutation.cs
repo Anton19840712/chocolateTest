@@ -21,17 +21,23 @@ namespace GraphQlBasicApi.Mutation
                 resolve: context =>
                 {
                     var personObj = context.GetArgument<Person>("person");
+
                     var personId = context.GetArgument<int>("id");
+
                     return personService.UpdatePerson(personId, personObj);
                 });
 
 
             Field<StringGraphType>("deletePerson",
+
                 arguments: new QueryArguments(new QueryArgument<IntGraphType> { Name = "id" }),
+
                 resolve: context =>
                 {
                     var personId = context.GetArgument<int>("id");
+
                     personService.DeletePerson(personId);
+
                     return "The person against the" + personId + "has been deleted";
                 });
         }

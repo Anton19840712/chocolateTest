@@ -8,9 +8,9 @@ namespace GraphQlBasicApi.Type
         {
             Field<IntGraphType>("id");
             Field<StringGraphType>("name");
-            Field<FloatGraphType>("country");
-            Field<FloatGraphType>("score");
-            Field<FloatGraphType>("phone");
+            Field<StringGraphType>("country");
+            Field<IntGraphType>("score");
+            Field<StringGraphType>("phone");
         }
     }
 }

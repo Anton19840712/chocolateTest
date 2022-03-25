@@ -41,19 +41,22 @@ namespace GraphQlBasicApi
                 options.EnableMetrics = false;
             }).AddSystemTextJson();
 
+
+            var connection = (@"Data Source=GRIDUSHKO-AA\SQLEXPRESS01;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False");
+
             services.AddDbContext<PersonDbContext>(
                 option => 
-                    option.UseSqlServer(@"Data Source= (localdb)\MSSQLLocalDB;Initial Catalog=GraphQLDb;Integrated Security = True"));
+                    option.UseSqlServer(connection));
         }
 
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, PersonDbContext dbContext)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
             }
 
-            dbContext.Database.EnsureCreated();
+            //dbContext.Database.EnsureCreated();
             app.UseGraphiQl("/graphql");
             app.UseGraphQL<ISchema>();
         }
