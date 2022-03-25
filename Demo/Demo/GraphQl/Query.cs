@@ -11,24 +11,17 @@ namespace Demo.GraphQl
     {
         public string SayHello(string? name = "Antonio") => $"Here I am! My name is {name}";
         public string SayName(string? name = "Irina") => $"The name is {name}";
-
-        [UseDbContext(typeof(BookContext))]
+                
+        [UseDbContext(typeof(PersonContext))]
         [UseFiltering]
         [UseSorting]
-        public IQueryable<Book> GetBooks([ScopedService] BookContext dbContext) =>
-            dbContext.Books;
-
-
-        [UseDbContext(typeof(BookContext))]
+        public IQueryable<Person>? GetPersons([ScopedService] PersonContext dbContext) =>
+            dbContext.Persons;
+        
+        [UseDbContext(typeof(PersonContext))]
         [UseFiltering]
         [UseSorting]
-        public IQueryable<Author> GetAuthors([ScopedService] BookContext dbContext) =>
-            dbContext.Authors;
-
-        [UseDbContext(typeof(BookContext))]
-        [UseFiltering]
-        [UseSorting]
-        public Task<Author> GetAuthorByIdAsync(int id, [ScopedService] BookContext dbContext) =>
-            dbContext.Authors.FirstOrDefaultAsync(t => t.Id == id);
+        public Task<Person> GetPersonByIdAsync(int id, [ScopedService] PersonContext dbContext) =>
+            dbContext.Persons.FirstOrDefaultAsync(t => t.Id == id);
     }
 }

@@ -5,7 +5,6 @@ using HotChocolate;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
@@ -17,20 +16,19 @@ namespace Demo
         public void ConfigureServices(IServiceCollection services)
         {
             services
-                .AddPooledDbContextFactory<BookContext>(
+                .AddPooledDbContextFactory<PersonContext>(
                     (s, o) => o
-                        .UseSqlite("Data Source=demo.db")
+                        .UseSqlServer(@"Server=GRIDUSHKO-AA\\SQLEXPRESS01;Database=Sales;Trusted_Connection=True;MultipleActiveResultSets=true")
                         .UseLoggerFactory(s.GetRequiredService<ILoggerFactory>()))
                 .AddGraphQLServer()
                     .AddQueryType<Query>()
                     .AddMutationType<Mutation>()
-                    .AddSubscriptionType<Subscription>()
-                    .AddType<AuthorType>()
-                    .AddType<BookType>()
+                    .AddType<PersonType>()
                     .AddFiltering()
                     .AddSorting()
                     .AddInMemorySubscriptions()
-                    .AddDataLoader<AuthorDataLoader>(); ;
+                    .AddDataLoader<PersonDataLoader>();
+            services.AddDbContext<PersonContext>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

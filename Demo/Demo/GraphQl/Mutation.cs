@@ -13,41 +13,26 @@ namespace Demo.GraphQl
     [ExtendObjectType("Mutation")]
     public class Mutation
     {
-        [UseDbContext(typeof(BookContext))]
-        public async Task<AddAuthorPayload> AddAuthorAsync(
-            AddAuthorInput input,
-            [ScopedService] BookContext dbContext)
-        {
-            var author = new Author
-            {
-                Name = input.Name
-            };
-
-            dbContext.Authors.Add(author);
-            await dbContext.SaveChangesAsync();
-
-            return new AddAuthorPayload(author);
-        }
-
-        [UseDbContext(typeof(BookContext))]
-        public async Task<AddBookPayload> AddBookAsync(
-            AddBookInput input,
-            [ScopedService] BookContext dbContext,
+        [UseDbContext(typeof(PersonContext))]
+        public async Task<AddPersonPayload> AddPersonAsync(
+            AddPersonInput input,
+            [ScopedService] PersonContext dbContext,
             [Service] ITopicEventSender eventSender,
             CancellationToken cancellationToken)
         {
-            var book = new Book
+            var person = new Person
             {
-                Title = input.Title,
-                AuthorId = input.AuthorId
+                Name = input.Name,
+                Id = input.Id
             };
+            if (dbContext!=null)
+            {
+                dbContext.Persons?.Add(person);
 
-            dbContext.Books.Add(book);
-            await dbContext.SaveChangesAsync(cancellationToken);
+                await dbContext.SaveChangesAsync(cancellationToken);
+            }
 
-            await eventSender.SendAsync(nameof(Subscription.OnBookReleased), book, cancellationToken);
-
-            return new AddBookPayload(book);
+            return new AddPersonPayload(person);
         }
     }
 }
