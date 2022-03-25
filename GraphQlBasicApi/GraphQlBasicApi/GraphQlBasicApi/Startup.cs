@@ -8,6 +8,17 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using GraphiQl;
+using GraphQL.Server;
+using GraphQL.Types;
+using GraphQlBasicApi.Data;
+using GraphQlBasicApi.Interfaces;
+using GraphQlBasicApi.Mutation;
+using GraphQlBasicApi.Query;
+using GraphQlBasicApi.Schema;
+using GraphQlBasicApi.Services;
+using GraphQlBasicApi.Type;
+using Microsoft.EntityFrameworkCore;
 
 namespace GraphQlBasicApi
 {
@@ -23,34 +34,33 @@ namespace GraphQlBasicApi
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddRazorPages();
+            services.AddControllers();
+            services.AddTransient<IPerson, PersonService>();
+            services.AddTransient<PersonType>();
+            services.AddTransient<PersonQuery>();
+            services.AddTransient<PersonMutation>();
+            services.AddTransient<ISchema, PersonSchema>();
+
+            services.AddGraphQL(options =>
+            {
+                options.EnableMetrics = false;
+            }).AddSystemTextJson();
+
+            services.AddDbContext<PersonDbContext>(
+                option => 
+                    option.UseSqlServer(@"Data Source= (localdb)\MSSQLLocalDB;Initial Catalog=GraphQLDb;Integrated Security = True"));
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, PersonDbContext dbContext)
         {
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
             }
-            else
-            {
-                app.UseExceptionHandler("/Error");
-                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-                app.UseHsts();
-            }
 
-            app.UseHttpsRedirection();
-            app.UseStaticFiles();
-
-            app.UseRouting();
-
-            app.UseAuthorization();
-
-            app.UseEndpoints(endpoints =>
-            {
-                endpoints.MapRazorPages();
-            });
+            dbContext.Database.EnsureCreated();
+            app.UseGraphiQl("/graphql");
+            app.UseGraphQL<ISchema>();
         }
     }
 }
