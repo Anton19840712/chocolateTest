@@ -4,4 +4,15 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Folder Include="Data\" />
+    <Folder Include="Schema\" />
+    <Folder Include="Query\" />
+    <Folder Include="Mutation\" />
+    <Folder Include="Models\" />
+    <Folder Include="Interfaces\" />
+    <Folder Include="Type\" />
+    <Folder Include="Services\" />
+  </ItemGroup>
+
 </Project>
