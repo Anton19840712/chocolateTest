@@ -14,6 +14,6 @@ namespace GraphQlBasicApi.Data
 
         }
 
-        public DbSet<Person> Products { get; set; }
+        public DbSet<Person> Persons { get; set; }
     }
 }
