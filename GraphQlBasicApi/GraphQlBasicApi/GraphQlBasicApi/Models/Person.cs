@@ -1,4 +1,5 @@
-﻿namespace GraphQlBasicApi.Models
+﻿#nullable enable
+namespace GraphQlBasicApi.Models
 {
     public class Person
     {
