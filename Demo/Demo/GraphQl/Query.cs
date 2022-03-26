@@ -15,13 +15,16 @@ namespace Demo.GraphQl
         [UseDbContext(typeof(PersonContext))]
         [UseFiltering]
         [UseSorting]
-        public IQueryable<Person>? GetPersons([ScopedService] PersonContext dbContext) =>
-            dbContext.Persons;
+        public IQueryable<Person>? GetPersons([ScopedService] PersonContext dbContext) => dbContext.Persons;
         
         [UseDbContext(typeof(PersonContext))]
         [UseFiltering]
         [UseSorting]
-        public Task<Person> GetPersonByIdAsync(int id, [ScopedService] PersonContext dbContext) =>
-            dbContext.Persons.FirstOrDefaultAsync(t => t.Id == id);
+        public async Task<Person> GetPersonByIdAsync(int id, [ScopedService] PersonContext dbContext)
+        {
+            return dbContext.Persons != null
+                ? await dbContext.Persons.FirstOrDefaultAsync(t => t.Id == id)
+                : new Person();
+        }
     }
 }
