@@ -40,9 +40,7 @@ namespace GraphQlBasicApi
             {
                 options.EnableMetrics = false;
             }).AddSystemTextJson();
-
-
-
+            
             services
                 .AddDbContext<PersonDbContext>(x => x.UseSqlServer(Configuration.GetConnectionString("PersonContext")));
         }
