@@ -42,9 +42,10 @@ namespace GraphQlBasicApi.Services
         public Person UpdatePerson(int id, Person person)
         {
             var personObj = _dbContext.Persons.Find(id);
-            personObj.Name = person.Name;
-            personObj.Country = person.Country;
-            personObj.Phone = person.Phone;
+            personObj.FirstName = person.FirstName;
+            personObj.LastName = person.LastName;
+            personObj.Gender = person.Gender;
+            personObj.Email = person.Email;
             personObj.Score = person.Score;
             _dbContext.SaveChanges();
             return person;

@@ -42,11 +42,9 @@ namespace GraphQlBasicApi
             }).AddSystemTextJson();
 
 
-            var connection = (@"Data Source=GRIDUSHKO-AA\SQLEXPRESS01;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False");
 
-            services.AddDbContext<PersonDbContext>(
-                option => 
-                    option.UseSqlServer(connection));
+            services
+                .AddDbContext<PersonDbContext>(x => x.UseSqlServer(Configuration.GetConnectionString("PersonContext")));
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

@@ -8,10 +8,11 @@ namespace GraphQlBasicApi.Type
         public PersonType()
         {
             Field(p=>p.Id);
-            Field(p => p.Name);
-            Field(p => p.Country);
+            Field(p => p.Gender);
+            Field(p => p.FirstName);
+            Field(p => p.LastName);
+            Field(p => p.Email);
             Field(p => p.Score);
-            Field(p => p.Phone);
         }
     }
 }
