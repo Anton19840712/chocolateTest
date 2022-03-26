@@ -1,4 +1,4 @@
 ﻿namespace ApiGraphQl.Models
 {
-    public record AddPersonPayload(Person person);
+    public record AddPersonPayload(Person PersonModel);
 }

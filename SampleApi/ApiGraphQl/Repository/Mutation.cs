@@ -9,13 +9,11 @@ namespace ApiGraphQl.Repository
     public class Mutation
     {
         [UseDbContext(typeof(PersonContext))]
-        public async Task<AddPersonPayload> AddAuthorAsync(
-            AddPersonInput input,
-            [ScopedService] PersonContext dbContext)
+        public async Task<AddPersonPayload> AddPersonAsync(AddPersonInput input, [ScopedService] PersonContext dbContext)
             {
             var person = new Person
             {
-                Name = input.Name,
+                FirstName = input.Name,
 
                 Score = input.Score
             };
