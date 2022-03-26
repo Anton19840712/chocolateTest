@@ -22,18 +22,17 @@ namespace ApiGraphQl.Repository
         {
             var persons = dbContext.Persons?.ToList();
 
-            if (persons!=null)
-            {
-                return persons;
-            }
-
-            return new List<Person>();
+            return persons ?? new List<Person>();
         }
 
         [UseDbContext(typeof(PersonContext))]
         [UseFiltering]
         [UseSorting]
-        public Task<Person> GetPersonByIdAsync(int id, [ScopedService] PersonContext dbContext) =>
-            dbContext.Persons.FirstOrDefaultAsync(t => t.Id == id);
+        public async Task<Person> GetPersonByIdAsync(int id, [ScopedService] PersonContext dbContext)
+        {
+            return dbContext.Persons != null
+                ? await dbContext.Persons.FirstOrDefaultAsync(t => t.Id == id)
+                : new Person();
+        }
     }
 }
