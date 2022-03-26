@@ -1,6 +1,8 @@
-﻿using ApiGraphQl.Repository;
+﻿using ApiGraphQl.Context;
+using ApiGraphQl.Repository;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -17,13 +19,17 @@ namespace ApiGraphQl
         public void ConfigureServices(IServiceCollection services)
         {
             services
-                .AddGraphQLServer()                
-                .AddQueryType<Query>()
-                .AddMutationType<Mutation>()
-                .AddFiltering()
-                .AddSorting()
-                ;
+            .AddGraphQLServer()                
+            .AddQueryType<Query>()
+            .AddMutationType<Mutation>()
+            .AddFiltering()
+            .AddSorting();
+
+
+            services
+            .AddPooledDbContextFactory<PersonContext>(x => x.UseSqlServer(Configuration.GetConnectionString("PersonContext")));
         }
+    
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
