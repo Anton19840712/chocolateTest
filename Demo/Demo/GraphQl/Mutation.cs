@@ -22,15 +22,13 @@ namespace Demo.GraphQl
         {
             var person = new Person
             {
-                Name = input.Name,
+                FirstName = input.Name,
                 Id = input.Id
             };
-            if (dbContext!=null)
-            {
-                dbContext.Persons?.Add(person);
+            
+            dbContext.Persons?.Add(person);
 
-                await dbContext.SaveChangesAsync(cancellationToken);
-            }
+            await dbContext.SaveChangesAsync(cancellationToken);
 
             return new AddPersonPayload(person);
         }

@@ -1,4 +1,4 @@
 ﻿namespace Demo.Data
 {
-    public record AddPersonPayload(Person person);
+    public record AddPersonPayload(Person PersonModel);
 }
