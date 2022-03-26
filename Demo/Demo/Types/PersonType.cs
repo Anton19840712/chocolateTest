@@ -16,13 +16,10 @@ namespace Demo.Types
                 .UseFiltering()
                 .UseSorting();
         }
-
-        private class Resolvers
+        protected class Resolvers
         {
-            public IQueryable<Person>? GetPersons(
-                Person person,
-                [ScopedService] PersonContext dbContext) =>
-                dbContext?.Persons?.Where(t => t.Id == person.Id);
+            public IQueryable<Person>? GetPersons(Person person, [ScopedService] PersonContext dbContext) =>
+                dbContext.Persons?.Where(t => t.Id == person.Id);
         }
     }
 }
