@@ -23,13 +23,10 @@ namespace Demo.Data
             IReadOnlyList<int> keys,
             CancellationToken cancellationToken)
         {
-            await using PersonContext context = _contextFactory.CreateDbContext();
+                return await _contextFactory.CreateDbContext().Persons!
+                    .Where(t => keys.Contains(t.Id))
+                    .ToDictionaryAsync(t => t.Id, cancellationToken);
 
-                var result = (await context.Persons
-                .Where(t => keys.Contains(t.Id))
-                .ToDictionaryAsync(t => t.Id, cancellationToken));
-
-                return result;
         }
     }
 }
