@@ -3,6 +3,9 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Demo.Infrastructure.Configuration.Mapping
 {
+    /// <summary>
+    /// Configuration mapping.
+    /// </summary>
     public static class MappingConfiguration
     {
         public static IServiceCollection AddMapping(this IServiceCollection services)
