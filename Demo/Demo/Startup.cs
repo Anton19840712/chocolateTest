@@ -1,8 +1,6 @@
-using Demo.Data;
 using Demo.DataBaseContexts;
 using Demo.Infrastructure.Configuration.Mapping;
 using Demo.Repositories.PersonRepository;
-using Demo.Types;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -25,18 +23,14 @@ namespace Demo
             services
                 .AddGraphQLServer()
                     .AddQueryType<PersonQuery>()
-                    .AddMutationType<Mutation>()
-                    .AddType<PersonType>()
-                    .AddFiltering()
-                    .AddSorting()
+                    .AddMutationType<PersonMutation>()
                     .AddInMemorySubscriptions()
-                    .AddDataLoader<PersonDataLoader>()
                 ;
 
-            services
-                .AddPooledDbContextFactory<PersonContext>
-                    (x =>
-                        x.UseSqlServer(Configuration.GetConnectionString("PersonContext")));
+            services.AddDbContext<PersonContext>(options =>
+            {
+                options.UseSqlServer(Configuration.GetConnectionString("PersonContext"));
+            });
 
             services.AddMapping();
         }
