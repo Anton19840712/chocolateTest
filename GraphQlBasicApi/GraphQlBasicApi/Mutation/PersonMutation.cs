@@ -11,13 +11,23 @@ namespace GraphQlBasicApi.Mutation
         public PersonMutation(IPerson personService)
         {
 
-            Field<PersonType>("createPerson", arguments: new QueryArguments(new QueryArgument<PersonInputType> { Name = "person" }),
-                resolve: context => personService.AddPerson(context.GetArgument<Person>("person")));
+            Field<PersonType>("createPerson", 
+                arguments: 
+                new QueryArguments(new QueryArgument<PersonInputType>
+                    {
+                        Name = "person"
+                    }
+                ),
+
+                resolve: context => 
+                    personService.AddPerson(context.GetArgument<Person>("person")));
 
 
             Field<PersonType>("updatePerson",
-                arguments: new QueryArguments(new QueryArgument<IntGraphType> { Name = "id" },
-                    new QueryArgument<PersonInputType> { Name = "person" }),
+                arguments: 
+                new QueryArguments(new QueryArgument<IntGraphType> { Name = "id" },
+                new QueryArgument<PersonInputType> { Name = "person" }),
+
                 resolve: context =>
                 {
                     var personObj = context.GetArgument<Person>("person");

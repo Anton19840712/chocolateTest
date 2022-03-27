@@ -6,11 +6,11 @@ namespace GraphQlBasicApi.Type
     {
         public PersonInputType()
         {
-            Field<IntGraphType>("id");
-            Field<StringGraphType>("name");
-            Field<StringGraphType>("country");
+            Field<StringGraphType>("gender");
+            Field<StringGraphType>("firstName");
+            Field<StringGraphType>("lastName");
+            Field<StringGraphType>("email");
             Field<IntGraphType>("score");
-            Field<StringGraphType>("phone");
         }
     }
 }
