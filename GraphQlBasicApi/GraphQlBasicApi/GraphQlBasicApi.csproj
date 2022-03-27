@@ -9,9 +9,7 @@
     <Folder Include="Schema\" />
     <Folder Include="Query\" />
     <Folder Include="Mutation\" />
-    <Folder Include="Interfaces\" />
     <Folder Include="Type\" />
-    <Folder Include="Services\" />
   </ItemGroup>
 	<ItemGroup>
 		<PackageReference Include="graphiql" Version="2.0.0" />

@@ -7,13 +7,17 @@ namespace GraphQlBasicApi.Query
 {
     public class PersonQuery : ObjectGraphType
     {
-        public PersonQuery(IPerson personService)
+        public PersonQuery(IPersonCommand personCommandService, IPersonQuery personQueryService)
         {
-            Field<ListGraphType<PersonType>>("persons", resolve: context => personService.GetAllPersons());
+            Field<ListGraphType<PersonType>>("persons", resolve: context => personCommandService.GetAllPersons());
 
             Field<PersonType>("person", arguments: new QueryArguments(new QueryArgument<IntGraphType> { Name = "id" }),
 
-                resolve: context => personService.GetPersonById(context.GetArgument<int>("id")));
+                resolve: context => personCommandService.GetPersonById(context.GetArgument<int>("id")));
+
+            Field<ListGraphType<PersonType>>("topPersons", arguments: new QueryArguments(new QueryArgument<IntGraphType> { Name = "limit" }),
+
+                resolve: context => personQueryService.GetTopPersons(context.GetArgument<int>("limit")));
         }
     }
 }
