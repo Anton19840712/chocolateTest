@@ -30,7 +30,8 @@ namespace GraphQlBasicApi
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
-            services.AddTransient<IPerson, PersonService>();
+            services.AddTransient<IPersonCommand, PersonCommandService>();
+            services.AddTransient<IPersonQuery, PersonQueryService>();
             services.AddTransient<PersonType>();
             services.AddTransient<PersonQuery>();
             services.AddTransient<PersonMutation>();
