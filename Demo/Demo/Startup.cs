@@ -1,14 +1,14 @@
 using Demo.Data;
-using Demo.GraphQl;
+using Demo.DataBaseContexts;
+using Demo.Infrastructure.Configuration.Mapping;
+using Demo.Repositories.PersonRepository;
 using Demo.Types;
-using HotChocolate;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 
 namespace Demo
 {
@@ -21,18 +21,24 @@ namespace Demo
         public IConfiguration Configuration { get; }
         public void ConfigureServices(IServiceCollection services)
         {
+
             services
                 .AddGraphQLServer()
-                    .AddQueryType<Query>()
+                    .AddQueryType<PersonQuery>()
                     .AddMutationType<Mutation>()
                     .AddType<PersonType>()
                     .AddFiltering()
                     .AddSorting()
                     .AddInMemorySubscriptions()
-                    .AddDataLoader<PersonDataLoader>(); 
+                    .AddDataLoader<PersonDataLoader>()
+                ;
 
             services
-                .AddPooledDbContextFactory<PersonContext>(x => x.UseSqlServer(Configuration.GetConnectionString("PersonContext")));
+                .AddPooledDbContextFactory<PersonContext>
+                    (x =>
+                        x.UseSqlServer(Configuration.GetConnectionString("PersonContext")));
+
+            services.AddMapping();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
