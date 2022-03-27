@@ -1,13 +1,14 @@
-﻿using Demo.Data;
-using HotChocolate;
+﻿using HotChocolate;
 using HotChocolate.Types;
 using System.Linq;
+using Demo.DataBaseContexts;
+using Demo.Models.PersonModels.DalPersonsDto;
 
 namespace Demo.Types
 {
-    public class PersonType : ObjectType<Person>
+    public class PersonType : ObjectType<PersonDalDto>
     {
-        protected override void Configure(IObjectTypeDescriptor<Person> descriptor)
+        protected override void Configure(IObjectTypeDescriptor<PersonDalDto> descriptor)
         {
             descriptor
                 .Field(t => t.Id)
@@ -18,8 +19,8 @@ namespace Demo.Types
         }
         protected class Resolvers
         {
-            public IQueryable<Person>? GetPersons(Person person, [ScopedService] PersonContext dbContext) =>
-                dbContext.Persons?.Where(t => t.Id == person.Id);
+            public IQueryable<PersonDalDto>? GetPersons(PersonDalDto personDalDto, [ScopedService] PersonContext dbContext) =>
+                dbContext.Persons?.Where(t => t.Id == personDalDto.Id);
         }
     }
 }

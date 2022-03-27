@@ -8,7 +8,7 @@ namespace GraphQlBasicApi.Mutation
 {
     public class PersonMutation : ObjectGraphType
     {
-        public PersonMutation(IPerson personService)
+        public PersonMutation(IPersonCommand personCommandService)
         {
 
             Field<PersonType>("createPerson", 
@@ -20,7 +20,7 @@ namespace GraphQlBasicApi.Mutation
                 ),
 
                 resolve: context => 
-                    personService.AddPerson(context.GetArgument<Person>("person")));
+                    personCommandService.AddPerson(context.GetArgument<Person>("person")));
 
 
             Field<PersonType>("updatePerson",
@@ -34,7 +34,7 @@ namespace GraphQlBasicApi.Mutation
 
                     var personId = context.GetArgument<int>("id");
 
-                    return personService.UpdatePerson(personId, personObj);
+                    return personCommandService.UpdatePerson(personId, personObj);
                 });
 
 
@@ -46,7 +46,7 @@ namespace GraphQlBasicApi.Mutation
                 {
                     var personId = context.GetArgument<int>("id");
 
-                    personService.DeletePerson(personId);
+                    personCommandService.DeletePerson(personId);
 
                     return "The person against the" + personId + "has been deleted";
                 });
