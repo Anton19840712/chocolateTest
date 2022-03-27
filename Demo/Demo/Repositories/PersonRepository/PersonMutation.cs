@@ -7,79 +7,96 @@ using Demo.Models.PersonModels.BusinessPersonsDto;
 using Demo.Models.PersonModels.DalPersonsDto;
 using Demo.Models.PersonModels.ResponsePersonsDto;
 using HotChocolate;
-using HotChocolate.Data;
 
 namespace Demo.Repositories.PersonRepository
 {
-
-    public class Mutation 
+    /// <summary>
+    /// Person mutation API 
+    /// </summary>
+    public class PersonMutation 
     {
-        private readonly IMapper _autoMapper;
 
-        public Mutation(IMapper autoMapper)
+        #region private fields
+        private readonly IMapper _autoMapper;
+        #endregion
+
+        #region constructor
+        public PersonMutation(IMapper autoMapper)
         {
             _autoMapper = autoMapper;
         }
+        #endregion
 
-        public PersonResponseDto AddPerson
-        (
-            [ScopedService] PersonContext personContext,
-            CreatePersonDto input,
-            CancellationToken cancellationToken)
+        #region graph ql api
+        /// <summary>
+        /// Api creates new instance of person.
+        /// </summary>
+        /// <param name="context"></param>
+        /// <param name="model"></param>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
+        public async Task<ResponsePersonDto> SaveAsync([Service] PersonContext context, PersonDalDto model, CancellationToken cancellationToken)
         {
-            var personDalModel = _autoMapper.Map<PersonDalDto>(input);
+            context.Persons.Add(model);
 
-            var person = _autoMapper.Map<Person>(personDalModel);
+            await context.SaveChangesAsync(cancellationToken);
 
-            personContext.Persons?.Add(personDalModel);
-
-            personContext.SaveChanges();
-
-            var personResponseDto = _autoMapper.Map<PersonResponseDto>(personDalModel);
-
-            return personResponseDto;
+            return _autoMapper.Map<ResponsePersonDto>(model);
         }
-
-        [UseDbContext(typeof(PersonContext))]
-        public async Task<PersonResponseDto> UpdatePersonAsync
-        (
-            UpdatePersonDto updateModel,
-            [ScopedService] PersonContext dbContext,
-            CancellationToken cancellationToken)
+        /// <summary>
+        /// Api deletes person instance.
+        /// </summary>
+        /// <param name="dbContext"></param>
+        /// <param name="id"></param>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
+        public async Task<ResponsePersonDto> DeleteAsync([Service] PersonContext dbContext, int id, CancellationToken cancellationToken)
         {
-            var personDalDto = dbContext.Persons?.SingleOrDefault(b => b.Id == updateModel.Id);
-
-            if (personDalDto != null)
-            {
-                var personDalModelDto = _autoMapper.Map<PersonDalDto>(updateModel);
-
-                dbContext.Persons?.Update(personDalModelDto);
-
-                await dbContext.SaveChangesAsync(cancellationToken);
-
-                var personResponseDto = _autoMapper.Map<PersonResponseDto>(personDalModelDto);
-
-                return personResponseDto;
-            }
-            
-            return new PersonResponseDto();
-        }
-
-
-        [UseDbContext(typeof(PersonContext))]
-        public async Task DeletePersonAsync
-        (
-            int id,
-            [ScopedService] PersonContext dbContext,
-            CancellationToken cancellationToken)
-        {
-            var personDalDto = new PersonDalDto(){ Id = id };
+            var personDalDto = new PersonDalDto() { Id = id };
 
             dbContext.Persons?.Attach(personDalDto);
 
             dbContext.Persons?.Remove(personDalDto);
 
             await dbContext.SaveChangesAsync(cancellationToken);
+
+            return _autoMapper.Map<ResponsePersonDto>(personDalDto);
         }
+
+        /// <summary>
+        /// Api update person instance
+        /// </summary>
+        /// <param name="dbContext"></param>
+        /// <param name="updateModel"></param>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
+        public async Task<ResponsePersonDto> UpdateAsync([Service] PersonContext dbContext, PersonUpdateDto updateModel, CancellationToken cancellationToken)
+        {
+            var personDalDto = dbContext.Persons.SingleOrDefault(b => b.Id == updateModel.Id);
+
+            if (personDalDto != null)
+            {
+                personDalDto.Email = updateModel.Email;
+
+                personDalDto.FirstName = updateModel.FirstName;
+
+                personDalDto.LastName = updateModel.LastName;
+
+                personDalDto.Gender = updateModel.Gender;
+
+                personDalDto.Score = updateModel.Score;
+
+                dbContext.Persons.Update(personDalDto);
+
+                await dbContext.SaveChangesAsync(cancellationToken);
+
+                var personResponseDto = _autoMapper.Map<ResponsePersonDto>(personDalDto);
+
+                return personResponseDto;
+            }
+
+            return new ResponsePersonDto();
+        } 
+        #endregion
     }
 }
