@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using AutoMapper;
+﻿using AutoMapper;
 using Demo.Models.PersonModels.BusinessPersonsDto;
 using Demo.Models.PersonModels.DalPersonsDto;
 using Demo.Models.PersonModels.ResponsePersonsDto;
@@ -9,10 +7,12 @@ namespace Demo.Infrastructure.Configuration.Mapping
 {
     public class PersonMappingRules : Profile
     {
-
+        /// <summary>
+        /// Mapping rules for person models.
+        /// </summary>
         public PersonMappingRules()
         {
-            CreateMap<CreatePersonDto, PersonDalDto>()
+            CreateMap<PersonCreateDto, PersonDalDto>()
                 .ForMember(to => to.Gender, from => from.MapFrom(source => source.Gender))
                 .ForMember(to => to.FirstName, from => from.MapFrom(source => source.FirstName))
                 .ForMember(to => to.LastName, from => from.MapFrom(source => source.LastName))
@@ -20,7 +20,7 @@ namespace Demo.Infrastructure.Configuration.Mapping
                 .ForMember(to => to.Score, from => from.MapFrom(source => source.Score))
                 ;
 
-            CreateMap<PersonDalDto, CreatePersonDto>()
+            CreateMap<PersonDalDto, PersonCreateDto>()
                 .ForMember(to => to.Gender, from => from.MapFrom(source => source.Gender))
                 .ForMember(to => to.FirstName, from => from.MapFrom(source => source.FirstName))
                 .ForMember(to => to.LastName, from => from.MapFrom(source => source.LastName))
@@ -28,7 +28,7 @@ namespace Demo.Infrastructure.Configuration.Mapping
                 .ForMember(to => to.Score, from => from.MapFrom(source => source.Score))
                 ;
 
-            CreateMap<PersonDalDto, UpdatePersonDto>()
+            CreateMap<PersonDalDto, PersonUpdateDto>()
                 .ForMember(to => to.Gender, from => from.MapFrom(source => source.Gender))
                 .ForMember(to => to.FirstName, from => from.MapFrom(source => source.FirstName))
                 .ForMember(to => to.LastName, from => from.MapFrom(source => source.LastName))
@@ -36,7 +36,8 @@ namespace Demo.Infrastructure.Configuration.Mapping
                 .ForMember(to => to.Score, from => from.MapFrom(source => source.Score))
                 ;
 
-            CreateMap<UpdatePersonDto, PersonDalDto >()
+            CreateMap<PersonUpdateDto, PersonDalDto >()
+                .ForMember(to => to.Id, from => from.MapFrom(source => source.Id))
                 .ForMember(to => to.Gender, from => from.MapFrom(source => source.Gender))
                 .ForMember(to => to.FirstName, from => from.MapFrom(source => source.FirstName))
                 .ForMember(to => to.LastName, from => from.MapFrom(source => source.LastName))
@@ -44,15 +45,7 @@ namespace Demo.Infrastructure.Configuration.Mapping
                 .ForMember(to => to.Score, from => from.MapFrom(source => source.Score))
                 ;
 
-            CreateMap<PersonDalDto, PersonResponseDto>()
-                .ForMember(to => to.Gender, from => from.MapFrom(source => source.Gender))
-                .ForMember(to => to.FirstName, from => from.MapFrom(source => source.FirstName))
-                .ForMember(to => to.LastName, from => from.MapFrom(source => source.LastName))
-                .ForMember(to => to.Email, from => from.MapFrom(source => source.Email))
-                .ForMember(to => to.Score, from => from.MapFrom(source => source.Score))
-                ;
-
-            CreateMap<PersonDalDto, Person>()
+            CreateMap<PersonDalDto, ResponsePersonDto>()
                 .ForMember(to => to.Gender, from => from.MapFrom(source => source.Gender))
                 .ForMember(to => to.FirstName, from => from.MapFrom(source => source.FirstName))
                 .ForMember(to => to.LastName, from => from.MapFrom(source => source.LastName))
